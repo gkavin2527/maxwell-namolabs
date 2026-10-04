@@ -2,6 +2,26 @@ import * as React from "react";
 import { products } from "@/content/products";
 import { ProductCard } from "@/components/sections/ProductCard";
 import { Heading } from "@/components/ui/Heading";
+import { cn } from "@/lib/utils";
+
+const groups = [
+  {
+    id: "products-family",
+    title: "Protect Your Family",
+    description: "Personal cover for your life, health and income, tailored to your situation.",
+    products: products.filter((p) => p.category === "personal"),
+    // 5 cards: 3 + 2, last row centred
+    cardWidth: "md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]",
+  },
+  {
+    id: "products-property",
+    title: "Protect Your Home, Car & Business",
+    description: "General and business cover, including quick online quotes through Tower.",
+    products: products.filter((p) => p.category !== "personal"),
+    // 4 cards: 2 x 2
+    cardWidth: "md:w-[calc(50%-12px)]",
+  },
+];
 
 export function ProductGrid() {
   return (
@@ -18,9 +38,24 @@ export function ProductGrid() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {products.map((product) => (
-          <ProductCard key={product.slug} product={product} />
+      <div className="space-y-12">
+        {groups.map((group) => (
+          <section key={group.id} aria-labelledby={group.id} className="space-y-6">
+            <div className="space-y-1">
+              <Heading as="h3" size="heading" id={group.id}>
+                {group.title}
+              </Heading>
+              <p className="text-[15px] text-[#4f4f4f]">{group.description}</p>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-6">
+              {group.products.map((product) => (
+                <div key={product.slug} className={cn("w-full flex [&>*]:w-full", group.cardWidth)}>
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          </section>
         ))}
       </div>
     </div>

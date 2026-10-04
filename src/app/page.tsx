@@ -68,14 +68,14 @@ export default function HomePage() {
         </div>
       </Container>
 
-      {/* 3. Product Showcase */}
-      <Container>
-        <ProductGrid />
-      </Container>
-
-      {/* 4. Tower Insurance Partner Module */}
+      {/* 3. Tower Quick Quote Strip */}
       <Container>
         <TowerCTAModule />
+      </Container>
+
+      {/* 4. Product Showcase */}
+      <Container>
+        <ProductGrid />
       </Container>
 
       {/* 5. 6-Step Advisory Process */}
