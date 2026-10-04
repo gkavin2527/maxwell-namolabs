@@ -38,17 +38,8 @@
   --text-display: 36px;
   --leading-display: 1;
 
-  /* Spacing */
-  --spacing-4: 4px;
-  --spacing-8: 8px;
-  --spacing-12: 12px;
-  --spacing-16: 16px;
-  --spacing-24: 24px;
-  --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-64: 64px;
-  --spacing-72: 72px;
+  /* Spacing: Tailwind's default 4px scale (p-4 = 16px) already matches the design's 4px base unit.
+     Do not add --spacing-N tokens here — they override the numeric scale (w-12 would become 12px). */
 
   /* Border Radius — Strict 3-Tier Rule: 3px / 16px / 40px ONLY */
   --radius-sm: 3px;
@@ -94,11 +85,13 @@ body {
   line-height: 1.6;
 }
 
-/* Headings use Deep Indigo #1b2045 */
-h1, h2, h3, h4, h5, h6 {
-  color: #1b2045;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+/* Headings use Deep Indigo #1b2045. Kept in the base layer so utility classes (e.g. text-white) can override it. */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    color: #1b2045;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
 }
 
 /* Accessibility: Visible Focus Rings */
