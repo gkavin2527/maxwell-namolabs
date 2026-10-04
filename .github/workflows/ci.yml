@@ -1,0 +1,52 @@
+name: CI Quality Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 11.21.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Run TypeScript typecheck
+        run: pnpm typecheck
+
+      - name: Run Unit Tests
+        run: pnpm test
+
+      - name: Build Next.js Application
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_SITE_URL: "https://maxwellinsurance.co.nz"
+          NEXT_PUBLIC_GTM_ID: "GTM-W4TSBGJD"
+          NEXT_PUBLIC_TOWER_QUOTE_URL: "https://my.tower.co.nz/quote/bundle-builder?agentcode=MYSOL142"
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run E2E & Accessibility Tests
+        run: pnpm test:e2e
+        env:
+          CI: true
