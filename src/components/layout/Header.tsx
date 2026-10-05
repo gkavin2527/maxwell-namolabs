@@ -8,6 +8,8 @@ import { mainNavConfig } from "@/content/nav-config";
 import { Menu, X, ChevronDown, ArrowRight, Phone } from "lucide-react";
 import { siteConfig } from "@/content/site-config";
 
+const dropdownId = (label: string) => `nav-menu-${label.toLowerCase().replace(/\s+/g, "-")}`;
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
@@ -28,6 +30,56 @@ export function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const openDropdown = (label: string) => {
+    cancelClose();
+    setActiveDropdown(label);
+  };
+
+  const closeDropdown = () => {
+    cancelClose();
+    setActiveDropdown(null);
+  };
+
+  // Short grace period so an off-axis pointer path doesn't dismiss the menu.
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setActiveDropdown(null), 150);
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  // Escape dismisses an open menu (also when it was opened by hover); focus
+  // returns to the trigger only if it was inside the menu.
+  React.useEffect(() => {
+    if (!activeDropdown) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      const trigger = document.querySelector<HTMLElement>(
+        `[aria-controls="${dropdownId(activeDropdown)}"]`
+      );
+      const focusWasInside = trigger?.parentElement?.contains(document.activeElement);
+      setActiveDropdown(null);
+      if (focusWasInside) trigger?.focus();
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [activeDropdown]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none">
@@ -78,19 +130,29 @@ export function Header() {
               {mainNavConfig.map((item) => {
                 if ("children" in item && item.children) {
                   const isOpen = activeDropdown === item.label;
+                  const menuId = dropdownId(item.label);
 
                   return (
                     <div
                       key={item.label}
                       className="relative"
-                      onMouseEnter={() => setActiveDropdown(item.label)}
-                      onMouseLeave={() => setActiveDropdown(null)}
+                      onMouseEnter={() => openDropdown(item.label)}
+                      onMouseLeave={scheduleClose}
+                      onBlur={(event) => {
+                        if (!event.currentTarget.contains(event.relatedTarget)) closeDropdown();
+                      }}
                     >
                       <button
                         type="button"
                         className="flex items-center gap-1 text-[15px] font-medium text-[#4f4f4f] hover:text-[#1b2045] transition-colors duration-200 py-2 focus-visible:outline-none focus-visible:underline cursor-pointer"
                         aria-expanded={isOpen}
-                        onClick={() => setActiveDropdown(isOpen ? null : item.label)}
+                        aria-controls={menuId}
+                        onClick={(event) => {
+                          // A mouse click on a menu that hover already opened must not shut it;
+                          // keyboard activation (detail === 0) still toggles.
+                          if (event.detail === 0 && isOpen) closeDropdown();
+                          else openDropdown(item.label);
+                        }}
                       >
                         <span>{item.label}</span>
                         <ChevronDown
@@ -101,11 +163,11 @@ export function Header() {
                         />
                       </button>
 
-                      {/* Mega Menu Dropdown */}
+                      {/* Mega Menu Dropdown. The ::before strip bridges the mt-3 gap so the pointer stays inside the hover area on its way down from the trigger. */}
                       {isOpen && (
                         <div
-                          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[560px] bg-white/98 backdrop-blur-sm border border-[#e9e9e9]/80 rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.10)] p-6 grid grid-cols-2 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
-                          role="menu"
+                          id={menuId}
+                          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[560px] bg-white/98 backdrop-blur-sm border border-[#e9e9e9]/80 rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.10)] p-6 grid grid-cols-2 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150 before:absolute before:inset-x-0 before:-top-3 before:h-3"
                         >
                           {item.children.map((group) => (
                             <div key={group.category || "links"} className="space-y-2">
@@ -119,6 +181,7 @@ export function Header() {
                                   <li key={subItem.href}>
                                     <Link
                                       href={subItem.href}
+                                      onClick={closeDropdown}
                                       className="block px-3 py-2 rounded-[12px] hover:bg-[#f9f9f9] transition-colors group"
                                     >
                                       <div className="text-[13px] font-semibold text-[#1b2045] group-hover:text-[#006cff] transition-colors">
