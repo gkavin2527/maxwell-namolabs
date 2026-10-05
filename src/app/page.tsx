@@ -24,7 +24,7 @@ export default function HomePage() {
   return (
     <div className="space-y-16 sm:space-y-20 pb-16">
       {/* 1. Hero Section */}
-      <div className="pt-6 sm:pt-8">
+      <div>
         <Container>
           <HeroPanel />
         </Container>

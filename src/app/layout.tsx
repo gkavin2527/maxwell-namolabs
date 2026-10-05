@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Roboto } from "next/font/google";
 import "./globals.css";
 import { SkipLink } from "@/components/layout/SkipLink";
-import { TopBanner } from "@/components/layout/TopBanner";
+
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/seo/CookieConsent";
@@ -80,9 +80,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#f9f9f9] text-[#4f4f4f]">
         <SkipLink />
         <JsonLd />
-        <TopBanner />
         <Header />
-        <main id="main-content" className="flex-1">
+        <main id="main-content" className="flex-1 pt-[88px]">
           {children}
         </main>
         <Footer />
