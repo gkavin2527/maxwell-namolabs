@@ -59,7 +59,7 @@ export function CookieConsent() {
             variant="ghost"
             size="sm"
             onClick={handleAccept}
-            className="text-[13px] text-[#787878]"
+            className="text-[13px] text-[#6c6c6c]"
           >
             Close
           </Button>

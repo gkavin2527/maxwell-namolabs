@@ -14,6 +14,33 @@ export interface NavGroup {
   }[];
 }
 
+/**
+ * Pages in the About Us section. Shared by the header dropdown and the
+ * sub-navigation on each About page so the two can't drift apart.
+ */
+export const aboutPageLinks: NavItem[] = [
+  {
+    label: "About Maxwell Financial",
+    href: "/about",
+    description: "Meet Roger & Kiri Venkatesh, your independent Auckland insurance advisers.",
+  },
+  {
+    label: "Why Maxwell",
+    href: "/about/why-maxwell",
+    description: "What you can expect when you work with us.",
+  },
+  {
+    label: "Our Advisers",
+    href: "/about/advisers",
+    description: "Roger and Kiri Venkatesh, licensed financial advisers.",
+  },
+  {
+    label: "Our Partners",
+    href: "/about/partners",
+    description: "The insurers we work with.",
+  },
+];
+
 export const mainNavConfig: (NavItem | NavGroup)[] = [
   {
     label: "Home",
@@ -88,23 +115,17 @@ export const mainNavConfig: (NavItem | NavGroup)[] = [
     label: "About Us",
     children: [
       {
-        category: "The Company",
+        category: "Who We Are",
+        items: aboutPageLinks,
+      },
+      {
+        category: "Trust & Legal",
         items: [
-          {
-            label: "About Maxwell Financial",
-            href: "/about",
-            description: "Meet Roger & Kiri Venkatesh, your independent Auckland insurance advisers.",
-          },
           {
             label: "Testimonials & Awards",
             href: "/testimonials",
             description: "Client feedback and our 2023 mySolutions Top Achiever recognition.",
           },
-        ],
-      },
-      {
-        category: "Legal & Regulatory",
-        items: [
           {
             label: "Disclosure Statement",
             href: "/disclosure-statement",

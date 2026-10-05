@@ -4,16 +4,17 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { mainNavConfig } from "@/content/nav-config";
+import { aboutPageLinks, mainNavConfig } from "@/content/nav-config";
 import { X, ChevronDown, ArrowRight, Phone } from "lucide-react";
 import { siteConfig } from "@/content/site-config";
+
+const dropdownId = (label: string) => `nav-menu-${label.toLowerCase().replace(/\s+/g, "-")}`;
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
   const [scrolled, setScrolled] = React.useState(false);
   const pathname = usePathname();
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const [prevPathname, setPrevPathname] = React.useState(pathname);
 
@@ -30,18 +31,55 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleMouseEnter = (label: string) => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const openDropdown = (label: string) => {
+    cancelClose();
     setActiveDropdown(label);
   };
 
-  const handleMouseLeave = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 120);
+  const closeDropdown = () => {
+    cancelClose();
+    setActiveDropdown(null);
   };
 
+  // Short grace period so an off-axis pointer path doesn't dismiss the menu.
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setActiveDropdown(null), 150);
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  // Escape dismisses an open menu (also when it was opened by hover); focus
+  // returns to the trigger only if it was inside the menu.
+  React.useEffect(() => {
+    if (!activeDropdown) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      const trigger = document.querySelector<HTMLElement>(
+        `[aria-controls="${dropdownId(activeDropdown)}"]`
+      );
+      const focusWasInside = trigger?.parentElement?.contains(document.activeElement);
+      setActiveDropdown(null);
+      if (focusWasInside) trigger?.focus();
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [activeDropdown]);
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full pointer-events-none">
       {/* Scroll-aware top ambient fade */}
@@ -91,23 +129,36 @@ export function Header() {
               {mainNavConfig.map((item) => {
                 if ("children" in item && item.children) {
                   const isOpen = activeDropdown === item.label;
+                  const menuId = dropdownId(item.label);
+                  const isCurrentSection = item.children.some((group) =>
+                    group.items.some((subItem) => subItem.href === pathname)
+                  );
 
                   return (
                     <div
                       key={item.label}
                       className="relative"
-                      onMouseEnter={() => handleMouseEnter(item.label)}
-                      onMouseLeave={handleMouseLeave}
+                      onMouseEnter={() => openDropdown(item.label)}
+                      onMouseLeave={scheduleClose}
+                      onBlur={(event) => {
+                        if (!event.currentTarget.contains(event.relatedTarget)) closeDropdown();
+                      }}
                     >
                       <button
                         type="button"
                         className={`flex items-center gap-1.5 text-[15px] font-medium px-3.5 py-2 rounded-[12px] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006cff] cursor-pointer ${
                           isOpen
                             ? "bg-[#f2f6ff] text-[#006cff]"
+                            : isCurrentSection
+                            ? "text-[#1b2045] font-semibold"
                             : "text-[#4f4f4f] hover:text-[#1b2045] hover:bg-neutral-100/70"
                         }`}
                         aria-expanded={isOpen}
-                        onClick={() => setActiveDropdown(isOpen ? null : item.label)}
+                        aria-controls={menuId}
+                        onClick={(event) => {
+                          if (event.detail === 0 && isOpen) closeDropdown();
+                          else openDropdown(item.label);
+                        }}
                       >
                         <span>{item.label}</span>
                         <ChevronDown
@@ -118,16 +169,12 @@ export function Header() {
                         />
                       </button>
 
-                      {/* Smooth Mega Menu Dropdown with hover bridge */}
-                      <div
-                        className={`absolute top-full left-1/2 -translate-x-1/2 pt-2.5 w-[580px] z-50 transition-all duration-200 ease-out origin-top ${
-                          isOpen
-                            ? "opacity-100 scale-100 translate-y-0 pointer-events-auto visible"
-                            : "opacity-0 scale-95 -translate-y-2 pointer-events-none invisible"
-                        }`}
-                        role="menu"
-                      >
-                        <div className="bg-white/98 backdrop-blur-md border border-[#e9e9e9] rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.10)] p-6 grid grid-cols-2 gap-6">
+                      {/* Mega Menu Dropdown with hover bridge */}
+                      {isOpen && (
+                        <div
+                          id={menuId}
+                          className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[580px] bg-white/98 backdrop-blur-md border border-[#e9e9e9] rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.10)] p-6 grid grid-cols-2 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150 before:absolute before:inset-x-0 before:-top-3 before:h-3"
+                        >
                           {item.children.map((group) => (
                             <div key={group.category || "links"} className="space-y-2">
                               {group.category && (
@@ -140,9 +187,11 @@ export function Header() {
                                   <li key={subItem.href}>
                                     <Link
                                       href={subItem.href}
+                                      aria-current={pathname === subItem.href ? "page" : undefined}
+                                      onClick={closeDropdown}
                                       className="block px-3 py-2 rounded-[12px] hover:bg-[#f2f6ff] transition-all duration-150 group"
                                     >
-                                      <div className="text-[13px] font-semibold text-[#1b2045] group-hover:text-[#006cff] group-hover:translate-x-0.5 transition-all duration-150">
+                                      <div className="text-[13px] font-semibold text-[#1b2045] group-hover:text-[#006cff] group-aria-[current=page]:text-[#006cff] group-hover:translate-x-0.5 transition-all duration-150">
                                         {subItem.label}
                                       </div>
                                       {subItem.description && (
@@ -157,7 +206,7 @@ export function Header() {
                             </div>
                           ))}
                         </div>
-                      </div>
+                      )}
                     </div>
                   );
                 }
@@ -274,7 +323,9 @@ export function Header() {
                       About &amp; Legal
                     </div>
                     <div className="grid grid-cols-1 gap-0.5 pl-2">
-                      <Link href="/about" className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">About Roger &amp; Kiri</Link>
+                      {aboutPageLinks.map((link) => (
+                        <Link key={link.href} href={link.href} className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">{link.label}</Link>
+                      ))}
                       <Link href="/testimonials" className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">Testimonials &amp; Awards</Link>
                       <Link href="/disclosure-statement" className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">Disclosure Statement</Link>
                       <Link href="/privacy-policy" className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">Privacy Policy</Link>

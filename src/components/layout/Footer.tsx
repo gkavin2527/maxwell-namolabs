@@ -63,7 +63,7 @@ export function Footer() {
                 className="h-[34px] w-auto object-contain"
               />
             </Link>
-            <p className="text-[13px] text-[#787878] leading-[1.65]">
+            <p className="text-[13px] text-[#6c6c6c] leading-[1.65]">
               Independent New Zealand insurance advisory. Helping families and
               businesses navigate life, health, and commercial risks since 2017.
             </p>
@@ -79,7 +79,7 @@ export function Footer() {
               <h3 className="text-[13px] font-semibold text-[#1b2045] tracking-tight">
                 Personal Insurance
               </h3>
-              <ul className="space-y-2.5 text-[13px] text-[#787878]">
+              <ul className="space-y-2.5 text-[13px] text-[#6c6c6c]">
                 <li>
                   <Link href="/life-insurance" className="hover:text-[#006cff] hover:translate-x-1 inline-block transition-all duration-200 py-0.5">
                     Life Insurance
@@ -152,10 +152,25 @@ export function Footer() {
               <h3 className="text-[13px] font-semibold text-[#1b2045] tracking-tight">
                 Company
               </h3>
-              <ul className="space-y-2.5 text-[13px] text-[#787878]">
+              <ul className="space-y-2.5 text-[13px] text-[#6c6c6c]">
                 <li>
                   <Link href="/about" className="hover:text-[#006cff] hover:translate-x-1 inline-block transition-all duration-200 py-0.5">
                     About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about/why-maxwell" className="hover:text-[#006cff] hover:translate-x-1 inline-block transition-all duration-200 py-0.5">
+                    Why Maxwell
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about/advisers" className="hover:text-[#006cff] hover:translate-x-1 inline-block transition-all duration-200 py-0.5">
+                    Our Advisers
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about/partners" className="hover:text-[#006cff] hover:translate-x-1 inline-block transition-all duration-200 py-0.5">
+                    Our Partners
                   </Link>
                 </li>
                 <li>
