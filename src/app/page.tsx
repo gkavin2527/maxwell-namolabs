@@ -9,6 +9,7 @@ import { PartnerLogos } from "@/components/sections/PartnerLogos";
 import { AdviserCard } from "@/components/sections/AdviserCard";
 import { CallbackForm } from "@/components/sections/CallbackForm";
 import { CTABand } from "@/components/sections/CTABand";
+import { Recognition } from "@/components/sections/Recognition";
 import { advisers } from "@/content/advisers";
 import { ShieldCheck, Award, Users, HeartHandshake } from "lucide-react";
 
@@ -67,16 +68,16 @@ export default function HomePage() {
         </div>
       </Container>
 
-      {/* 3. Product Showcase */}
+      {/* 3. Tower Quick Quote Strip */}
+      <Container>
+        <TowerCTAModule />
+      </Container>
+
+      {/* 4. Product Showcase */}
       <Container>
         <div id="products">
           <ProductGrid />
         </div>
-      </Container>
-
-      {/* 4. Tower Insurance Partner Module */}
-      <Container>
-        <TowerCTAModule />
       </Container>
 
       {/* 5. 6-Step Advisory Process */}
@@ -107,12 +108,17 @@ export default function HomePage() {
         <PartnerLogos />
       </Container>
 
-      {/* 8. Quick Callback Request */}
+      {/* 8. Industry Recognition */}
+      <Container>
+        <Recognition />
+      </Container>
+
+      {/* 9. Quick Callback Request */}
       <Container narrow>
         <CallbackForm />
       </Container>
 
-      {/* 9. Final Call to Action Band */}
+      {/* 10. Final Call to Action Band */}
       <Container>
         <CTABand />
       </Container>
