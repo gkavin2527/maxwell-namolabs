@@ -91,7 +91,7 @@ export function HeroPanel() {
 
       // 2. Initial column entrance animations
       gsap.from(".hero-col-1", {
-        y: 60,
+        y: 70,
         opacity: 0,
         duration: 1,
         ease: "power3.out",
@@ -99,7 +99,7 @@ export function HeroPanel() {
       });
 
       gsap.from(".hero-col-2", {
-        y: 90,
+        y: 100,
         opacity: 0,
         duration: 1.1,
         ease: "power3.out",
@@ -124,25 +124,32 @@ export function HeroPanel() {
         delay: 0.25,
       });
 
-      // 4. Enhanced card hover micro-animations (from portfolio script.js pattern)
+      // 4. Ultra-smooth premium card hover micro-animations
       const cards = gsap.utils.toArray<HTMLElement>(".hero-card");
-      cards.forEach((card, index) => {
+      cards.forEach((card) => {
         const img = card.querySelector("img");
-        const rotationAngle = index % 2 === 0 ? 1.5 : -1.5;
+        const shine = card.querySelector(".card-shine");
 
         card.addEventListener("mouseenter", () => {
           gsap.to(card, {
-            scale: 1.05,
-            y: "-=8",
-            rotation: rotationAngle,
-            duration: 0.35,
+            y: -10,
+            scale: 1.035,
+            duration: 0.4,
             ease: "power2.out",
-            boxShadow: "0 18px 36px rgba(0, 108, 255, 0.14)",
+            boxShadow: "0 22px 42px -10px rgba(0, 108, 255, 0.22), 0 0 0 1.5px rgba(0, 108, 255, 0.38), 0 8px 16px -4px rgba(0, 0, 0, 0.08)",
             overwrite: "auto",
           });
           if (img) {
             gsap.to(img, {
               scale: 1.08,
+              duration: 0.45,
+              ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
+          if (shine) {
+            gsap.to(shine, {
+              opacity: 1,
               duration: 0.35,
               ease: "power2.out",
               overwrite: "auto",
@@ -152,17 +159,24 @@ export function HeroPanel() {
 
         card.addEventListener("mouseleave", () => {
           gsap.to(card, {
+            y: 0,
             scale: 1,
-            y: "+=8",
-            rotation: 0,
-            duration: 0.35,
+            duration: 0.4,
             ease: "power2.out",
-            boxShadow: "0 4px 16px rgba(0, 0, 0, 0.06)",
+            boxShadow: "0 4px 16px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(233, 233, 233, 0.8)",
             overwrite: "auto",
           });
           if (img) {
             gsap.to(img, {
               scale: 1,
+              duration: 0.4,
+              ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
+          if (shine) {
+            gsap.to(shine, {
+              opacity: 0,
               duration: 0.35,
               ease: "power2.out",
               overwrite: "auto",
@@ -171,7 +185,7 @@ export function HeroPanel() {
         });
       });
 
-      // 5. ScrollTrigger Parallax (inspired by portfolio col-1-section-6 & col-section-7)
+      // 5. ScrollTrigger Parallax
       if (col1Ref.current && col2Ref.current && col3Ref.current) {
         gsap.to(col1Ref.current, {
           y: -40,
@@ -352,123 +366,132 @@ export function HeroPanel() {
           </div>
         </div>
 
-        {/* ── RIGHT: 3-Column Lifestyle Showcase with Project Design Tokens ── */}
+        {/* ── RIGHT: 3-Column Lifestyle Showcase in a Sculpted Half-Heart Silhouette ── */}
         <div ref={showcaseRef} className="w-full max-w-[620px] mx-auto lg:ml-auto grid grid-cols-3 gap-3 sm:gap-4 items-start">
           
-          {/* Column 1 (Left): Staggered downwards with 2 cards */}
-          <div ref={col1Ref} className="hero-col-1 flex flex-col gap-3.5 sm:gap-4 pt-12 sm:pt-16">
+          {/* Column 1 (Left / Inner Dip): Starts lowest to begin the sweeping half-heart curve */}
+          <div ref={col1Ref} className="hero-col-1 flex flex-col gap-3.5 sm:gap-4 pt-24 sm:pt-32 lg:pt-36">
             {/* Card 1: Father with daughter on piggyback */}
-            <div className="hero-card relative h-[190px] sm:h-[220px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            <div className="hero-card relative h-[210px] sm:h-[235px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.fatherDaughter}
                 alt="Father playing with daughter"
                 fill
-                className="object-cover object-center will-change-transform"
+                className="object-cover object-center will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
                 priority
               />
             </div>
 
             {/* Card 2: Senior gentleman with coffee */}
-            <div className="hero-card relative h-[210px] sm:h-[240px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            <div className="hero-card relative h-[220px] sm:h-[245px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.seniorCoffee}
                 alt="Confident senior gentleman at cafe table"
                 fill
-                className="object-cover object-top will-change-transform"
+                className="object-cover object-top will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
               />
               {/* Subtle bottom fade matching parchment canvas */}
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none z-10" />
             </div>
           </div>
 
-          {/* Column 2 (Center): 3 cards */}
-          <div ref={col2Ref} className="hero-col-2 flex flex-col gap-3.5 sm:gap-4 pt-2 sm:pt-4">
+          {/* Column 2 (Center / Heart Lobe Arch): Arches upwards forming the top rounded lobe */}
+          <div ref={col2Ref} className="hero-col-2 flex flex-col gap-3.5 sm:gap-4 pt-8 sm:pt-10">
             {/* Card 1: Woman on phone */}
-            <div className="hero-card relative h-[175px] sm:h-[195px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            <div className="hero-card relative h-[185px] sm:h-[205px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.womanPhone}
                 alt="Woman reviewing financial plans on phone"
                 fill
-                className="object-cover object-top will-change-transform"
+                className="object-cover object-top will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
                 priority
               />
             </div>
 
             {/* Card 2: Happy customers image */}
-            <div className="hero-card relative h-[190px] sm:h-[210px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            <div className="hero-card relative h-[200px] sm:h-[220px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.happyCustomers}
                 alt="Happy mother and daughter enjoying peace of mind"
                 fill
-                className="object-cover object-center will-change-transform"
+                className="object-cover object-center will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
               />
             </div>
 
             {/* Card 3: Young man in polo outdoors */}
-            <div className="hero-card relative h-[200px] sm:h-[230px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            <div className="hero-card relative h-[215px] sm:h-[240px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.youngManPolo}
                 alt="Young professional outdoors with smartphone"
                 fill
-                className="object-cover object-top will-change-transform"
+                className="object-cover object-top will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
               />
               {/* Subtle bottom fade matching parchment canvas */}
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none z-10" />
             </div>
           </div>
 
-          {/* Column 3 (Right): Starts at top with 4 cards */}
+          {/* Column 3 (Right / Heart Crest & Tail): Starts highest at top and extends to the bottom point */}
           <div ref={col3Ref} className="hero-col-3 flex flex-col gap-3.5 sm:gap-4 pt-0">
             {/* Card 1: Young couple / coworkers at laptop */}
-            <div className="hero-card relative h-[145px] sm:h-[160px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            <div className="hero-card relative h-[160px] sm:h-[175px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.coupleLaptop}
                 alt="Young couple celebrating good news on laptop"
                 fill
-                className="object-cover object-center will-change-transform"
+                className="object-cover object-center will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
                 priority
               />
             </div>
 
             {/* Card 2: Warm senior couple in winter coats */}
-            <div className="hero-card relative h-[180px] sm:h-[200px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            <div className="hero-card relative h-[190px] sm:h-[210px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.seniorCouple}
                 alt="Senior couple smiling warmly"
                 fill
-                className="object-cover object-center will-change-transform"
+                className="object-cover object-center will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
               />
             </div>
 
             {/* Card 3: Friends at cafe / contactless tap payment */}
-            <div className="hero-card relative h-[165px] sm:h-[180px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            <div className="hero-card relative h-[180px] sm:h-[200px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.cafePayment}
                 alt="Friends having coffee and making easy payment"
                 fill
-                className="object-cover object-center will-change-transform"
+                className="object-cover object-center will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
               />
             </div>
 
-            {/* Card 4: Elegant senior woman with phone */}
-            <div className="hero-card relative h-[175px] sm:h-[190px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/60 cursor-pointer will-change-transform">
+            {/* Card 4: Elegant senior woman with phone (bottom tail tip of the heart) */}
+            <div className="hero-card relative h-[195px] sm:h-[220px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
+              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
               <Image
                 src={photos.olderWomanPhone}
                 alt="Mature woman looking at smartphone"
                 fill
-                className="object-cover object-center will-change-transform"
+                className="object-cover object-center will-change-transform transition-transform duration-300"
                 sizes="(max-width: 768px) 33vw, 200px"
               />
               {/* Subtle bottom fade matching parchment canvas */}
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none z-10" />
             </div>
           </div>
 
