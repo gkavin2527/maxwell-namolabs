@@ -14,6 +14,33 @@ export interface NavGroup {
   }[];
 }
 
+/**
+ * Pages in the About Us section. Shared by the header dropdown and the
+ * sub-navigation on each About page so the two can't drift apart.
+ */
+export const aboutPageLinks: NavItem[] = [
+  {
+    label: "About Maxwell Financial",
+    href: "/about",
+    description: "Meet Roger & Kiri Venkatesh, your independent Auckland insurance advisers.",
+  },
+  {
+    label: "Why Maxwell",
+    href: "/about/why-maxwell",
+    description: "What you can expect when you work with us.",
+  },
+  {
+    label: "Our Advisers",
+    href: "/about/advisers",
+    description: "Roger and Kiri Venkatesh, licensed financial advisers.",
+  },
+  {
+    label: "Our Partners",
+    href: "/about/partners",
+    description: "The insurers we work with.",
+  },
+];
+
 export const mainNavConfig: (NavItem | NavGroup)[] = [
   {
     label: "Home",
