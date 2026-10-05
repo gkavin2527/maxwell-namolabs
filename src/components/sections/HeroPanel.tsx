@@ -40,6 +40,7 @@ const photos = {
 
 export function HeroPanel() {
   const heroRef = React.useRef<HTMLElement>(null);
+  const showcaseRef = React.useRef<HTMLDivElement>(null);
   const col1Ref = React.useRef<HTMLDivElement>(null);
   const col2Ref = React.useRef<HTMLDivElement>(null);
   const col3Ref = React.useRef<HTMLDivElement>(null);
@@ -206,19 +207,19 @@ export function HeroPanel() {
         });
       }
 
-      // 6. Mouse movement parallax (inspired by portfolio heroboxImageMoves)
-      if (!("ontouchstart" in window || navigator.maxTouchPoints > 0)) {
+      // 6. Mouse movement parallax attached ONLY to the showcase container (images area)
+      const showcaseEl = showcaseRef.current;
+      if (showcaseEl && !("ontouchstart" in window || navigator.maxTouchPoints > 0)) {
         const handleMouseMove = (e: MouseEvent) => {
-          const { clientX, clientY } = e;
-          const { innerWidth, innerHeight } = window;
-          const normalizedX = (clientX / innerWidth - 0.5) * 2;
-          const normalizedY = (clientY / innerHeight - 0.5) * 2;
+          const rect = showcaseEl.getBoundingClientRect();
+          const normalizedX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+          const normalizedY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
 
           if (col1Ref.current) {
             gsap.to(col1Ref.current, {
               y: normalizedY * 16,
               x: normalizedX * 8,
-              duration: 0.8,
+              duration: 0.6,
               ease: "power2.out",
               overwrite: "auto",
             });
@@ -226,9 +227,9 @@ export function HeroPanel() {
 
           if (col2Ref.current) {
             gsap.to(col2Ref.current, {
-              y: -normalizedY * 22,
+              y: -normalizedY * 20,
               x: -normalizedX * 10,
-              duration: 0.8,
+              duration: 0.6,
               ease: "power2.out",
               overwrite: "auto",
             });
@@ -238,15 +239,50 @@ export function HeroPanel() {
             gsap.to(col3Ref.current, {
               y: normalizedY * 12,
               x: normalizedX * 6,
-              duration: 0.8,
+              duration: 0.6,
               ease: "power2.out",
               overwrite: "auto",
             });
           }
         };
 
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
+        const handleMouseLeave = () => {
+          if (col1Ref.current) {
+            gsap.to(col1Ref.current, {
+              x: 0,
+              y: 0,
+              duration: 0.7,
+              ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
+          if (col2Ref.current) {
+            gsap.to(col2Ref.current, {
+              x: 0,
+              y: 0,
+              duration: 0.7,
+              ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
+          if (col3Ref.current) {
+            gsap.to(col3Ref.current, {
+              x: 0,
+              y: 0,
+              duration: 0.7,
+              ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
+        };
+
+        showcaseEl.addEventListener("mousemove", handleMouseMove);
+        showcaseEl.addEventListener("mouseleave", handleMouseLeave);
+
+        return () => {
+          showcaseEl.removeEventListener("mousemove", handleMouseMove);
+          showcaseEl.removeEventListener("mouseleave", handleMouseLeave);
+        };
       }
     }, heroRef);
 
@@ -317,7 +353,7 @@ export function HeroPanel() {
         </div>
 
         {/* ── RIGHT: 3-Column Lifestyle Showcase with Project Design Tokens ── */}
-        <div className="w-full max-w-[620px] mx-auto lg:ml-auto grid grid-cols-3 gap-3 sm:gap-4 items-start">
+        <div ref={showcaseRef} className="w-full max-w-[620px] mx-auto lg:ml-auto grid grid-cols-3 gap-3 sm:gap-4 items-start">
           
           {/* Column 1 (Left): Staggered downwards with 2 cards */}
           <div ref={col1Ref} className="hero-col-1 flex flex-col gap-3.5 sm:gap-4 pt-12 sm:pt-16">
