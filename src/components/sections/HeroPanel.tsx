@@ -7,7 +7,7 @@ import { siteConfig } from "@/content/site-config";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Curated high-resolution lifestyle photography matching the theme
+// Curated high-resolution lifestyle photography with ideal framing
 const photos = {
   // Col 1 — Top: Joyful father giving piggyback ride to daughter
   fatherDaughter:
@@ -91,104 +91,67 @@ export function HeroPanel() {
 
       // 2. Initial column entrance animations
       gsap.from(".hero-col-1", {
-        y: 70,
+        y: 50,
         opacity: 0,
-        duration: 1,
+        duration: 0.9,
         ease: "power3.out",
         delay: 0.2,
       });
 
       gsap.from(".hero-col-2", {
-        y: 100,
+        y: 70,
         opacity: 0,
-        duration: 1.1,
+        duration: 1.0,
         ease: "power3.out",
         delay: 0.35,
       });
 
       gsap.from(".hero-col-3", {
-        y: 50,
+        y: 40,
         opacity: 0,
-        duration: 1,
+        duration: 0.9,
         ease: "power3.out",
         delay: 0.5,
       });
 
-      // 3. Card scale/fade entrance
+      // 3. Card scale/fade entrance on load
       gsap.from(".hero-card", {
-        scale: 0.94,
+        scale: 0.96,
         opacity: 0,
-        stagger: 0.07,
-        duration: 0.8,
+        stagger: 0.05,
+        duration: 0.7,
         ease: "power2.out",
         delay: 0.25,
       });
 
-      // 4. Ultra-smooth premium card hover micro-animations
+      // 4. Static, elegant hover effect — images NEVER move or displace
       const cards = gsap.utils.toArray<HTMLElement>(".hero-card");
       cards.forEach((card) => {
-        const img = card.querySelector("img");
-        const shine = card.querySelector(".card-shine");
-
         card.addEventListener("mouseenter", () => {
           gsap.to(card, {
-            y: -10,
-            scale: 1.035,
-            duration: 0.4,
+            boxShadow: "0 12px 28px -6px rgba(0, 108, 255, 0.22), 0 0 0 2px rgba(0, 108, 255, 0.45)",
+            borderColor: "rgba(0, 108, 255, 0.5)",
+            duration: 0.3,
             ease: "power2.out",
-            boxShadow: "0 22px 42px -10px rgba(0, 108, 255, 0.22), 0 0 0 1.5px rgba(0, 108, 255, 0.38), 0 8px 16px -4px rgba(0, 0, 0, 0.08)",
             overwrite: "auto",
           });
-          if (img) {
-            gsap.to(img, {
-              scale: 1.08,
-              duration: 0.45,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-          if (shine) {
-            gsap.to(shine, {
-              opacity: 1,
-              duration: 0.35,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
         });
 
         card.addEventListener("mouseleave", () => {
           gsap.to(card, {
-            y: 0,
-            scale: 1,
-            duration: 0.4,
-            ease: "power2.out",
             boxShadow: "0 4px 16px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(233, 233, 233, 0.8)",
+            borderColor: "rgba(233, 233, 233, 0.8)",
+            duration: 0.3,
+            ease: "power2.out",
             overwrite: "auto",
           });
-          if (img) {
-            gsap.to(img, {
-              scale: 1,
-              duration: 0.4,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-          if (shine) {
-            gsap.to(shine, {
-              opacity: 0,
-              duration: 0.35,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
         });
       });
 
-      // 5. ScrollTrigger Parallax
+      // 5. Gentle ScrollTrigger Parallax on scroll
       if (col1Ref.current && col2Ref.current && col3Ref.current) {
         gsap.to(col1Ref.current, {
-          y: -40,
+          y: -30,
           ease: "none",
           scrollTrigger: {
             trigger: heroRef.current,
@@ -199,18 +162,18 @@ export function HeroPanel() {
         });
 
         gsap.to(col2Ref.current, {
-          y: -80,
+          y: -50,
           ease: "none",
           scrollTrigger: {
             trigger: heroRef.current,
             start: "top top",
             end: "bottom top",
-            scrub: 1.2,
+            scrub: 1.0,
           },
         });
 
         gsap.to(col3Ref.current, {
-          y: -35,
+          y: -25,
           ease: "none",
           scrollTrigger: {
             trigger: heroRef.current,
@@ -220,92 +183,14 @@ export function HeroPanel() {
           },
         });
       }
-
-      // 6. Mouse movement parallax attached ONLY to the showcase container (images area)
-      const showcaseEl = showcaseRef.current;
-      if (showcaseEl && !("ontouchstart" in window || navigator.maxTouchPoints > 0)) {
-        const handleMouseMove = (e: MouseEvent) => {
-          const rect = showcaseEl.getBoundingClientRect();
-          const normalizedX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-          const normalizedY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-
-          if (col1Ref.current) {
-            gsap.to(col1Ref.current, {
-              y: normalizedY * 16,
-              x: normalizedX * 8,
-              duration: 0.6,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-
-          if (col2Ref.current) {
-            gsap.to(col2Ref.current, {
-              y: -normalizedY * 20,
-              x: -normalizedX * 10,
-              duration: 0.6,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-
-          if (col3Ref.current) {
-            gsap.to(col3Ref.current, {
-              y: normalizedY * 12,
-              x: normalizedX * 6,
-              duration: 0.6,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-        };
-
-        const handleMouseLeave = () => {
-          if (col1Ref.current) {
-            gsap.to(col1Ref.current, {
-              x: 0,
-              y: 0,
-              duration: 0.7,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-          if (col2Ref.current) {
-            gsap.to(col2Ref.current, {
-              x: 0,
-              y: 0,
-              duration: 0.7,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-          if (col3Ref.current) {
-            gsap.to(col3Ref.current, {
-              x: 0,
-              y: 0,
-              duration: 0.7,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-          }
-        };
-
-        showcaseEl.addEventListener("mousemove", handleMouseMove);
-        showcaseEl.addEventListener("mouseleave", handleMouseLeave);
-
-        return () => {
-          showcaseEl.removeEventListener("mousemove", handleMouseMove);
-          showcaseEl.removeEventListener("mouseleave", handleMouseLeave);
-        };
-      }
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={heroRef} className="min-h-[calc(100vh-88px)] flex items-center py-6 sm:py-10 overflow-hidden">
-      <div className="w-full grid grid-cols-1 lg:grid-cols-[48%_52%] gap-10 xl:gap-14 items-center">
+    <section ref={heroRef} className="min-h-[calc(100vh-88px)] flex items-center py-6 sm:py-10">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-[46%_54%] gap-8 xl:gap-12 items-center">
 
         {/* ── LEFT: Copy & CTAs adhering strictly to Project Design System ── */}
         <div className="space-y-6 lg:pr-2">
@@ -367,131 +252,122 @@ export function HeroPanel() {
         </div>
 
         {/* ── RIGHT: 3-Column Lifestyle Showcase in a Sculpted Half-Heart Silhouette ── */}
-        <div ref={showcaseRef} className="w-full max-w-[620px] mx-auto lg:ml-auto grid grid-cols-3 gap-3 sm:gap-4 items-start">
+        <div ref={showcaseRef} className="w-full max-w-[560px] mx-auto lg:ml-auto grid grid-cols-3 gap-3 sm:gap-3.5 items-start">
           
-          {/* Column 1 (Left / Inner Dip): Starts lowest to begin the sweeping half-heart curve */}
-          <div ref={col1Ref} className="hero-col-1 flex flex-col gap-3.5 sm:gap-4 pt-24 sm:pt-32 lg:pt-36">
+          {/* Column 1 (Left / Inner Dip): Starts lower (pt-20) */}
+          <div ref={col1Ref} className="hero-col-1 flex flex-col gap-3 sm:gap-3.5 pt-16 sm:pt-20">
             {/* Card 1: Father with daughter on piggyback */}
-            <div className="hero-card relative h-[210px] sm:h-[235px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            <div className="hero-card relative h-[170px] sm:h-[185px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.fatherDaughter}
                 alt="Father playing with daughter"
                 fill
-                className="object-cover object-center will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-[center_25%]"
+                sizes="(max-width: 768px) 33vw, 185px"
                 priority
               />
             </div>
 
             {/* Card 2: Senior gentleman with coffee */}
-            <div className="hero-card relative h-[220px] sm:h-[245px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            <div className="hero-card relative h-[180px] sm:h-[195px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.seniorCoffee}
                 alt="Confident senior gentleman at cafe table"
                 fill
-                className="object-cover object-top will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-[center_20%]"
+                sizes="(max-width: 768px) 33vw, 185px"
               />
               {/* Subtle bottom fade matching parchment canvas */}
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none" />
             </div>
           </div>
 
-          {/* Column 2 (Center / Heart Lobe Arch): Arches upwards forming the top rounded lobe */}
-          <div ref={col2Ref} className="hero-col-2 flex flex-col gap-3.5 sm:gap-4 pt-8 sm:pt-10">
+          {/* Column 2 (Center / Heart Lobe Arch): Arches up to the highest crest (pt-0) */}
+          <div ref={col2Ref} className="hero-col-2 flex flex-col gap-3 sm:gap-3.5 pt-0">
             {/* Card 1: Woman on phone */}
-            <div className="hero-card relative h-[185px] sm:h-[205px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            <div className="hero-card relative h-[155px] sm:h-[170px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.womanPhone}
                 alt="Woman reviewing financial plans on phone"
                 fill
-                className="object-cover object-top will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-[center_25%]"
+                sizes="(max-width: 768px) 33vw, 185px"
                 priority
               />
             </div>
 
             {/* Card 2: Happy customers image */}
-            <div className="hero-card relative h-[200px] sm:h-[220px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            <div className="hero-card relative h-[165px] sm:h-[180px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.happyCustomers}
                 alt="Happy mother and daughter enjoying peace of mind"
                 fill
-                className="object-cover object-center will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-[center_30%]"
+                sizes="(max-width: 768px) 33vw, 185px"
               />
             </div>
 
             {/* Card 3: Young man in polo outdoors */}
-            <div className="hero-card relative h-[215px] sm:h-[240px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            <div className="hero-card relative h-[175px] sm:h-[190px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.youngManPolo}
                 alt="Young professional outdoors with smartphone"
                 fill
-                className="object-cover object-top will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-[center_20%]"
+                sizes="(max-width: 768px) 33vw, 185px"
               />
               {/* Subtle bottom fade matching parchment canvas */}
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none" />
             </div>
           </div>
 
-          {/* Column 3 (Right / Heart Crest & Tail): Starts highest at top and extends to the bottom point */}
-          <div ref={col3Ref} className="hero-col-3 flex flex-col gap-3.5 sm:gap-4 pt-0">
+          {/* Column 3 (Right / Tapering Tail): Starts slightly below peak (pt-6) and tapers down */}
+          <div ref={col3Ref} className="hero-col-3 flex flex-col gap-3 sm:gap-3.5 pt-6 sm:pt-7">
             {/* Card 1: Young couple / coworkers at laptop */}
-            <div className="hero-card relative h-[160px] sm:h-[175px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            <div className="hero-card relative h-[130px] sm:h-[145px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.coupleLaptop}
                 alt="Young couple celebrating good news on laptop"
                 fill
-                className="object-cover object-center will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-[center_20%]"
+                sizes="(max-width: 768px) 33vw, 185px"
                 priority
               />
             </div>
 
             {/* Card 2: Warm senior couple in winter coats */}
-            <div className="hero-card relative h-[190px] sm:h-[210px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            <div className="hero-card relative h-[140px] sm:h-[155px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.seniorCouple}
                 alt="Senior couple smiling warmly"
                 fill
-                className="object-cover object-center will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-[center_20%]"
+                sizes="(max-width: 768px) 33vw, 185px"
               />
             </div>
 
             {/* Card 3: Friends at cafe / contactless tap payment */}
-            <div className="hero-card relative h-[180px] sm:h-[200px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            <div className="hero-card relative h-[140px] sm:h-[155px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.cafePayment}
                 alt="Friends having coffee and making easy payment"
                 fill
-                className="object-cover object-center will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 33vw, 185px"
               />
             </div>
 
-            {/* Card 4: Elegant senior woman with phone (bottom tail tip of the heart) */}
-            <div className="hero-card relative h-[195px] sm:h-[220px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80 cursor-pointer will-change-transform">
-              <div className="card-shine absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/30 opacity-0 pointer-events-none z-10" />
+            {/* Card 4: Elegant senior woman with phone (lowest tapered tip) */}
+            <div className="hero-card relative h-[145px] sm:h-[160px] w-full rounded-[16px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-white border border-[#e9e9e9]/80">
               <Image
                 src={photos.olderWomanPhone}
                 alt="Mature woman looking at smartphone"
                 fill
-                className="object-cover object-center will-change-transform transition-transform duration-300"
-                sizes="(max-width: 768px) 33vw, 200px"
+                className="object-cover object-[center_20%]"
+                sizes="(max-width: 768px) 33vw, 185px"
               />
               {/* Subtle bottom fade matching parchment canvas */}
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[#f9f9f9] via-[#f9f9f9]/40 to-transparent pointer-events-none" />
             </div>
           </div>
 
