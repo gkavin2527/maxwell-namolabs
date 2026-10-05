@@ -1,48 +1,57 @@
 import * as React from "react";
-import { Button } from "@/components/ui/Button";
-import { Heading } from "@/components/ui/Heading";
-import { siteConfig } from "@/content/site-config";
-import { Phone } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export interface CTABandProps {
   title?: string;
   subtitle?: string;
+  buttonText?: string;
+  buttonHref?: string;
 }
 
 export function CTABand({
-  title = "Ready to Review or Put New Insurance in Place?",
-  subtitle = "Talk to Roger today for independent advice, free quotes, and personalised cover tailored to your family's needs.",
+  title = "Bring clarity, structure, and peace of mind to your family's future",
+  subtitle,
+  buttonText = "Start your Consultation",
+  buttonHref = "/contact",
 }: CTABandProps) {
   return (
-    <div className="bg-[#006cff] text-[#ffffff] rounded-[40px] p-8 md:p-14 shadow-lg text-center relative overflow-hidden">
-      <div className="max-w-[720px] mx-auto space-y-6 relative z-10">
-        <Heading as="h2" size="heading-lg" inverted className="text-[#ffffff]">
+    <div className="relative rounded-[40px] overflow-hidden min-h-[420px] sm:min-h-[480px] lg:min-h-[520px] flex items-center justify-center p-8 sm:p-12 md:p-16 border border-[#e9e9e9]/80 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+      {/* Background landscape image matching reference */}
+      <Image
+        src="/images/cta-sunset-landscape.jpg"
+        alt="Serene landscape horizon"
+        fill
+        className="object-cover object-[center_35%]"
+        sizes="(max-width: 1280px) 100vw, 1200px"
+        priority
+      />
+
+      {/* Atmospheric ambient overlay for smooth bottom fade and perfect contrast */}
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/40 pointer-events-none"
+        aria-hidden="true"
+      />
+
+      {/* Centered content strictly matching the reference */}
+      <div className="relative z-10 text-center max-w-[780px] mx-auto space-y-6 sm:space-y-8 px-4">
+        <h2 className="text-[32px] sm:text-[44px] lg:text-[52px] font-semibold text-[#1b2045] tracking-tight leading-[1.14]">
           {title}
-        </Heading>
+        </h2>
 
-        <p className="text-[17px] text-[#ffffff]/90 leading-relaxed font-normal">
-          {subtitle}
-        </p>
+        {subtitle && (
+          <p className="text-[15px] sm:text-[16px] text-[#4f4f4f] max-w-[560px] mx-auto leading-relaxed">
+            {subtitle}
+          </p>
+        )}
 
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
-          <Button
-            href="/contact"
-            variant="white"
-            size="lg"
-            className="text-[#006cff] font-bold"
+        <div>
+          <Link
+            href={buttonHref}
+            className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#1b2045] hover:bg-[#006cff] active:bg-[#005bd6] text-white font-medium text-[15px] shadow-[0_4px_14px_rgba(27,32,69,0.22)] hover:shadow-[0_8px_24px_rgba(0,108,255,0.28)] transition-all duration-300 hover:scale-[1.02] cursor-pointer"
           >
-            Get A Free Quote
-          </Button>
-
-          <Button
-            href={siteConfig.phone.mobileTel}
-            variant="outlineWhite"
-            size="lg"
-            className="flex items-center gap-2"
-          >
-            <Phone className="w-4 h-4" />
-            <span>Call {siteConfig.phone.mobile}</span>
-          </Button>
+            {buttonText}
+          </Link>
         </div>
       </div>
     </div>
