@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { ShieldCheck, Play, ArrowRight } from "lucide-react";
-import { siteConfig } from "@/content/site-config";
+import Link from "next/link";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -54,20 +54,14 @@ export function HeroPanel() {
       // 1. Initial entrance timeline for copy
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      tl.from(".hero-badge", {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-      })
-      .from(
+      tl.from(
         ".hero-title-line",
         {
           y: 35,
           opacity: 0,
           stagger: 0.12,
           duration: 0.8,
-        },
-        "-=0.35"
+        }
       )
       .from(
         ".hero-desc",
@@ -194,19 +188,7 @@ export function HeroPanel() {
 
         {/* ── LEFT: Copy & CTAs adhering strictly to Project Design System ── */}
         <div className="space-y-6 lg:pr-2">
-          {/* Eyebrow button — Interactive pill with subtle glow and hover state */}
-          <div className="hero-badge">
-            <a
-              href="/about"
-              className="group inline-flex items-center gap-2.5 text-[13px] font-medium text-[#1b2045] bg-white border border-[#e9e9e9] hover:border-[#66a7ff] rounded-full px-4 py-2 shadow-[0_2px_10px_rgba(0,108,255,0.06)] hover:shadow-[0_4px_16px_rgba(0,108,255,0.12)] transition-all duration-300 w-fit"
-            >
-              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#006cff]/10 text-[#006cff] group-hover:bg-[#006cff] group-hover:text-white transition-colors duration-200 shrink-0">
-                <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
-              </span>
-              <span className="tracking-tight">Secure lives with smart finance</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#9a9a9a] group-hover:text-[#006cff] group-hover:translate-x-0.5 transition-all shrink-0" aria-hidden="true" />
-            </a>
-          </div>
+
 
           {/* Headline: Deep Indigo primary, Pewter secondary, project sans-serif typography */}
           <h1 className="leading-[1.06] tracking-tight">
@@ -226,26 +208,25 @@ export function HeroPanel() {
             Drive your life financially strong by taking control, staying disciplined, and building a secure future with confidence.
           </p>
 
-          {/* CTA Buttons — Electric Cobalt & Deep Indigo, 16px radius */}
+          {/* CTA Buttons — Option 1: Free Quote + Explore Insurance */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <div className="hero-cta">
-              <a
+              <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-7 py-3.5 rounded-[16px] bg-[#006cff] hover:bg-[#4672ff] active:bg-[#005bd6] text-white font-medium text-[15px] shadow-sm hover:shadow-md transition-all duration-200"
+                className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[16px] bg-[#006cff] hover:bg-[#4672ff] active:bg-[#005bd6] text-white font-medium text-[15px] shadow-sm hover:shadow-md transition-all duration-200"
               >
-                Get Started
-              </a>
+                Get a Free Quote
+                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
+              </Link>
             </div>
 
             <div className="hero-cta">
               <a
-                href={siteConfig.phone.mobileTel}
-                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-[16px] bg-white hover:bg-neutral-50 text-[#1b2045] border border-[#e9e9e9] font-medium text-[15px] shadow-sm transition-all duration-200"
+                href="#products"
+                className="group inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-[16px] bg-white hover:bg-neutral-50 text-[#1b2045] border border-[#e9e9e9] hover:border-[#66a7ff] font-medium text-[15px] shadow-sm hover:shadow transition-all duration-200"
               >
-                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#006cff]/10">
-                  <Play className="w-3 h-3 fill-[#006cff] text-[#006cff] ml-0.5" aria-hidden="true" />
-                </span>
-                Play Video
+                Explore Insurance
+                <ChevronDown className="w-4 h-4 text-[#9a9a9a] group-hover:text-[#006cff] group-hover:translate-y-0.5 transition-all duration-200" aria-hidden="true" />
               </a>
             </div>
           </div>

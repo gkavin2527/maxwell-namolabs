@@ -69,7 +69,9 @@ export default function HomePage() {
 
       {/* 3. Product Showcase */}
       <Container>
-        <ProductGrid />
+        <div id="products">
+          <ProductGrid />
+        </div>
       </Container>
 
       {/* 4. Tower Insurance Partner Module */}

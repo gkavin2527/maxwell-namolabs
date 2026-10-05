@@ -19,9 +19,10 @@ const initialState: ActionResponse = {
 
 export interface QuoteFormProps {
   defaultProductSlug?: string;
+  embedded?: boolean;
 }
 
-export function QuoteForm({ defaultProductSlug }: QuoteFormProps) {
+export function QuoteForm({ defaultProductSlug, embedded = false }: QuoteFormProps) {
   const [state, formAction, isPending] = useActionState(submitEnquiry, initialState);
 
   const adviserOptions = [
@@ -36,9 +37,9 @@ export function QuoteForm({ defaultProductSlug }: QuoteFormProps) {
     { value: "email", label: "Email preferred" },
   ];
 
-  return (
-    <div className="bg-[#ffffff] border border-[#e9e9e9] rounded-[40px] p-8 md:p-14 shadow-sm">
-      <div className="max-w-[760px] mx-auto space-y-8">
+  const inner = (
+    <div className="space-y-8">
+      {!embedded && (
         <div className="text-center space-y-3">
           <span className="text-[13px] font-bold text-[#006cff] uppercase tracking-wider">
             No Obligation &bull; 100% Free Consultation
@@ -50,6 +51,7 @@ export function QuoteForm({ defaultProductSlug }: QuoteFormProps) {
             Fill in your details below and one of our licensed advisers will review your circumstances, compare policy options, and provide tailored recommendations.
           </p>
         </div>
+      )}
 
         {state.success ? (
           <div
@@ -185,6 +187,17 @@ export function QuoteForm({ defaultProductSlug }: QuoteFormProps) {
             </div>
           </form>
         )}
+      </div>
+  );
+
+  if (embedded) {
+    return inner;
+  }
+
+  return (
+    <div className="bg-[#ffffff] border border-[#e9e9e9] rounded-[40px] p-8 md:p-14 shadow-sm">
+      <div className="max-w-[760px] mx-auto">
+        {inner}
       </div>
     </div>
   );
