@@ -18,11 +18,11 @@ export function Footer() {
               height={44}
               className="h-[36px] w-auto object-contain"
             />
-            <p className="text-[13px] text-[#787878] leading-relaxed">
+            <p className="text-[13px] text-[#6c6c6c] leading-relaxed">
               Independent New Zealand insurance advisory. Helping families and
               businesses navigate life, health, and commercial risks since 2017.
             </p>
-            <p className="text-[12px] text-[#9a9a9a]">
+            <p className="text-[12px] text-[#6c6c6c]">
               &copy; 2024–2026 {siteConfig.legalName}. All rights reserved.
             </p>
           </div>
@@ -34,7 +34,7 @@ export function Footer() {
               <h3 className="text-[13px] font-semibold text-[#1b2045] mb-4">
                 Insurance
               </h3>
-              <ul className="space-y-3 text-[13px] text-[#787878]">
+              <ul className="space-y-3 text-[13px] text-[#6c6c6c]">
                 <li>
                   <Link href="/" className="hover:text-[#1b2045] transition-colors">
                     Home
@@ -68,7 +68,7 @@ export function Footer() {
               <h3 className="text-[13px] font-semibold text-[#1b2045] mb-4">
                 Company
               </h3>
-              <ul className="space-y-3 text-[13px] text-[#787878]">
+              <ul className="space-y-3 text-[13px] text-[#6c6c6c]">
                 <li>
                   <Link href="/about" className="hover:text-[#1b2045] transition-colors">
                     About Us
