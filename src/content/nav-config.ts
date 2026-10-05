@@ -115,23 +115,17 @@ export const mainNavConfig: (NavItem | NavGroup)[] = [
     label: "About Us",
     children: [
       {
-        category: "The Company",
+        category: "Who We Are",
+        items: aboutPageLinks,
+      },
+      {
+        category: "Trust & Legal",
         items: [
-          {
-            label: "About Maxwell Financial",
-            href: "/about",
-            description: "Meet Roger & Kiri Venkatesh, your independent Auckland insurance advisers.",
-          },
           {
             label: "Testimonials & Awards",
             href: "/testimonials",
             description: "Client feedback and our 2023 mySolutions Top Achiever recognition.",
           },
-        ],
-      },
-      {
-        category: "Legal & Regulatory",
-        items: [
           {
             label: "Disclosure Statement",
             href: "/disclosure-statement",

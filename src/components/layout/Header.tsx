@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { mainNavConfig } from "@/content/nav-config";
+import { aboutPageLinks, mainNavConfig } from "@/content/nav-config";
 import { Menu, X, ChevronDown, ArrowRight, Phone } from "lucide-react";
 import { siteConfig } from "@/content/site-config";
 
@@ -131,6 +131,9 @@ export function Header() {
                 if ("children" in item && item.children) {
                   const isOpen = activeDropdown === item.label;
                   const menuId = dropdownId(item.label);
+                  const isCurrentSection = item.children.some((group) =>
+                    group.items.some((subItem) => subItem.href === pathname)
+                  );
 
                   return (
                     <div
@@ -144,7 +147,9 @@ export function Header() {
                     >
                       <button
                         type="button"
-                        className="flex items-center gap-1 text-[15px] font-medium text-[#4f4f4f] hover:text-[#1b2045] transition-colors duration-200 py-2 focus-visible:outline-none focus-visible:underline cursor-pointer"
+                        className={`flex items-center gap-1 text-[15px] font-medium hover:text-[#1b2045] transition-colors duration-200 py-2 focus-visible:outline-none focus-visible:underline cursor-pointer ${
+                          isCurrentSection ? "text-[#1b2045] font-semibold" : "text-[#4f4f4f]"
+                        }`}
                         aria-expanded={isOpen}
                         aria-controls={menuId}
                         onClick={(event) => {
@@ -181,14 +186,15 @@ export function Header() {
                                   <li key={subItem.href}>
                                     <Link
                                       href={subItem.href}
+                                      aria-current={pathname === subItem.href ? "page" : undefined}
                                       onClick={closeDropdown}
-                                      className="block px-3 py-2 rounded-[12px] hover:bg-[#f9f9f9] transition-colors group"
+                                      className="block px-3 py-2 rounded-[12px] hover:bg-[#f9f9f9] aria-[current=page]:bg-[#f9f9f9] transition-colors group"
                                     >
-                                      <div className="text-[13px] font-semibold text-[#1b2045] group-hover:text-[#006cff] transition-colors">
+                                      <div className="text-[13px] font-semibold text-[#1b2045] group-hover:text-[#006cff] group-aria-[current=page]:text-[#006cff] transition-colors">
                                         {subItem.label}
                                       </div>
                                       {subItem.description && (
-                                        <p className="text-[12px] text-[#9a9a9a] leading-snug line-clamp-1 mt-0.5">
+                                        <p className="text-[12px] text-[#6c6c6c] leading-snug line-clamp-2 mt-0.5">
                                           {subItem.description}
                                         </p>
                                       )}
@@ -311,7 +317,9 @@ export function Header() {
                       About &amp; Legal
                     </div>
                     <div className="grid grid-cols-1 gap-0.5 pl-2">
-                      <Link href="/about" className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">About Roger &amp; Kiri</Link>
+                      {aboutPageLinks.map((link) => (
+                        <Link key={link.href} href={link.href} className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">{link.label}</Link>
+                      ))}
                       <Link href="/testimonials" className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">Testimonials &amp; Awards</Link>
                       <Link href="/disclosure-statement" className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">Disclosure Statement</Link>
                       <Link href="/privacy-policy" className="py-1.5 text-[14px] text-[#4f4f4f] hover:text-[#1b2045]">Privacy Policy</Link>

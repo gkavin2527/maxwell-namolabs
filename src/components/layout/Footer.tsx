@@ -75,6 +75,21 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/about/why-maxwell" className="hover:text-[#1b2045] transition-colors">
+                    Why Maxwell
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about/advisers" className="hover:text-[#1b2045] transition-colors">
+                    Our Advisers
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about/partners" className="hover:text-[#1b2045] transition-colors">
+                    Our Partners
+                  </Link>
+                </li>
+                <li>
                   <Link href="/testimonials" className="hover:text-[#1b2045] transition-colors">
                     Testimonials
                   </Link>

@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
+import { AboutSubnav } from "@/components/sections/AboutSubnav";
 import { AdviserCard } from "@/components/sections/AdviserCard";
 import { CTABand } from "@/components/sections/CTABand";
 import { advisers } from "@/content/advisers";
@@ -34,7 +35,7 @@ export default function AboutPage() {
       </div>
 
       {/* Hero Header */}
-      <Container>
+      <Container className="space-y-5">
         <div className="bg-[#ffffff] border border-[#e9e9e9] rounded-[40px] p-8 md:p-14 shadow-sm space-y-6">
           <div className="flex flex-wrap items-center gap-3">
             <Tag variant="glacial">About Maxwell Financial Services</Tag>
@@ -52,6 +53,8 @@ export default function AboutPage() {
             Maxwell Financial Services Limited was founded in 2017 to provide New Zealand families and business owners with genuinely independent, personalised insurance advice and steadfast claims advocacy.
           </p>
         </div>
+
+        <AboutSubnav current="/about" />
       </Container>
 
       {/* Advisers Section */}
