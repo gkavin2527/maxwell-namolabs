@@ -6,11 +6,10 @@ import { ProductGrid } from "@/components/sections/ProductGrid";
 import { TowerCTAModule } from "@/components/sections/TowerCTAModule";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { PartnerLogos } from "@/components/sections/PartnerLogos";
-import { AdviserCard } from "@/components/sections/AdviserCard";
+import { AdviserSpotlight } from "@/components/sections/AdviserSpotlight";
 import { CallbackForm } from "@/components/sections/CallbackForm";
 import { CTABand } from "@/components/sections/CTABand";
 import { Recognition } from "@/components/sections/Recognition";
-import { advisers } from "@/content/advisers";
 import { ShieldCheck, Award, Users, HeartHandshake } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -20,8 +19,6 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const roger = advisers[0];
-
   return (
     <div className="space-y-16 sm:space-y-20 pb-16">
       {/* 1. Hero Section */}
@@ -87,20 +84,7 @@ export default function HomePage() {
 
       {/* 6. Adviser Profile Spotlight */}
       <Container>
-        <div className="max-w-[900px] mx-auto space-y-6">
-          <div className="text-center space-y-2">
-            <span className="text-[13px] font-bold text-[#006cff] uppercase tracking-wider">
-              Independent Representation
-            </span>
-            <h2 className="text-[28px] sm:text-[32px] font-bold text-[#1b2045]">
-              Meet Your Financial Adviser
-            </h2>
-            <p className="text-[15px] text-[#4f4f4f] max-w-[580px] mx-auto">
-              You work directly with Roger Venkatesh from your very first consultation through to policy settlement and ongoing claims management.
-            </p>
-          </div>
-          <AdviserCard adviser={roger} />
-        </div>
+        <AdviserSpotlight />
       </Container>
 
       {/* 7. Partner Provider Logos */}
