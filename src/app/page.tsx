@@ -10,6 +10,7 @@ import { AdviserSpotlight } from "@/components/sections/AdviserSpotlight";
 import { CallbackForm } from "@/components/sections/CallbackForm";
 import { CTABand } from "@/components/sections/CTABand";
 import { Recognition } from "@/components/sections/Recognition";
+import { WhyMaxwellSummary } from "@/components/sections/WhyMaxwellSummary";
 import { ShieldCheck, Award, Users, HeartHandshake } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -92,17 +93,22 @@ export default function HomePage() {
         <PartnerLogos />
       </Container>
 
-      {/* 8. Industry Recognition */}
+      {/* 8. Why Maxwell */}
+      <Container>
+        <WhyMaxwellSummary />
+      </Container>
+
+      {/* 9. Industry Recognition */}
       <Container>
         <Recognition />
       </Container>
 
-      {/* 9. Quick Callback Request */}
+      {/* 10. Quick Callback Request */}
       <Container narrow>
         <CallbackForm />
       </Container>
 
-      {/* 10. Final Call to Action Band */}
+      {/* 11. Final Call to Action Band */}
       <Container>
         <CTABand />
       </Container>

@@ -19,7 +19,7 @@ import { awards } from "@/content/testimonials";
 import { siteConfig } from "@/content/site-config";
 import { clientPledge, clientPromises, whyReasons, type WhyIcon } from "@/content/why-maxwell";
 
-const reasonIcons: Record<WhyIcon, LucideIcon> = {
+export const reasonIcons: Record<WhyIcon, LucideIcon> = {
   shield: ShieldCheck,
   handshake: Handshake,
   target: Target,
