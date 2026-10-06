@@ -1,40 +1,68 @@
 import * as React from "react";
 import Image from "next/image";
-import { partners } from "@/content/partners";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
+import { partners } from "@/content/partners";
 
 export function PartnerLogos() {
   return (
-    <div className="space-y-8">
-      <div className="text-center max-w-[680px] mx-auto space-y-2">
-        <span className="text-[13px] font-bold text-[#006cff] uppercase tracking-wider">
-          Top New Zealand Insurers
-        </span>
-        <Heading as="h2" size="heading-lg">
+    <section aria-labelledby="home-partners-heading" className="space-y-10">
+      <div className="text-center max-w-[700px] mx-auto space-y-3">
+        <Eyebrow>Our Insurance Partners</Eyebrow>
+        <Heading as="h2" id="home-partners-heading" size="heading-lg">
           Partners We Work With
         </Heading>
-        <p className="text-[15px] text-[#4f4f4f]">
-          We compare policies across New Zealand’s most reputable insurance providers to find the optimal coverage and premium terms for you.
+        {/* COMPLIANCE-REVIEW: the "Our Partners" wording on the current site (content/scraped/home.md) */}
+        <p className="text-[16px] text-graphite leading-relaxed">
+          Maxwell Financial Services has an excellent relationship with all major insurers, and
+          we&rsquo;ll make sure you get an insurance solution that is formulated for your
+          circumstances.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 items-center">
+      <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {partners.map((partner) => (
-          <div
+          <li
             key={partner.name}
-            className="bg-[#ffffff] border border-[#e9e9e9] rounded-[24px] p-5 h-[100px] flex items-center justify-center hover:border-[#66a7ff] transition-colors shadow-sm group"
+            className="bg-white border border-mist rounded-3xl overflow-hidden flex flex-col"
           >
-            <div className="relative w-full h-[52px]">
-              <Image
-                src={partner.logo}
-                alt={partner.alt}
-                fill
-                className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-200"
-              />
+            <div className="h-24 sm:h-28 border-b border-mist p-5 sm:p-6">
+              <div className="relative w-full h-full">
+                <Image
+                  src={partner.logo}
+                  alt={partner.alt}
+                  fill
+                  sizes="(min-width: 1024px) 240px, 45vw"
+                  className="object-contain"
+                />
+              </div>
             </div>
-          </div>
+
+            <div className="p-4 sm:p-5 space-y-1 grow">
+              <p className="text-[15px] font-bold text-deep-indigo">{partner.name}</p>
+              <p className="text-[13px] text-slate leading-snug">{partner.covers.join(" · ")}</p>
+            </div>
+          </li>
         ))}
+      </ul>
+
+      <div className="flex flex-col items-center gap-4">
+        <Button href="/about/partners" variant="secondary" size="default">
+          See who we work with for each type of cover
+        </Button>
+
+        {/* COMPLIANCE-REVIEW: mirrors the Disclosure Statement ("Commission and Fees") */}
+        <p className="max-w-[760px] text-center text-[13px] text-slate leading-relaxed">
+          If you take out a policy or invest through us, we may be paid commission by the provider.
+          Our{" "}
+          <Link href="/disclosure-statement" className="underline hover:text-deep-indigo">
+            Disclosure Statement
+          </Link>{" "}
+          sets out how much each provider pays us.
+        </p>
       </div>
-    </div>
+    </section>
   );
 }
