@@ -51,3 +51,62 @@ test.describe("Homepage End-to-End Tests", () => {
     await expect(page.locator("h1")).toContainText("Disclosure Statement");
   });
 });
+
+test.describe("Homepage sections", () => {
+  test("shows the lower sections in order, ending with reviews and the call to action", async ({ page }) => {
+    await page.goto("/");
+
+    const order = [
+      "Meet Your Financial Advisers",
+      "Partners We Work With",
+      "Insurance advice built on relationships and trust", // Why Maxwell
+      "Top Achiever Award 2023", // Industry Recognition
+      "What Our Customers Say",
+      "Bring clarity, structure, and peace of mind to your family's future", // CTA band
+    ];
+    const headings = (await page.locator("main h2").allTextContents()).map((text) => text.trim());
+
+    expect(headings.filter((text) => order.includes(text))).toEqual(order);
+  });
+
+  test("no longer has the quick callback form", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.getByRole("heading", { name: "Request a Quick Callback" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Request Free Callback" })).toHaveCount(0);
+  });
+
+  test("introduces both licensed advisers", async ({ page }) => {
+    await page.goto("/");
+
+    const advisers = page.locator('section[aria-labelledby="home-advisers-heading"]');
+    await expect(advisers.getByRole("heading", { level: 3 })).toHaveText([
+      "Roger Venkatesh",
+      "Kiri Venkatesh",
+    ]);
+    await expect(advisers).toContainText("FSP 539026");
+    await expect(advisers).toContainText("FSP 1007043");
+  });
+
+  test("links each partner to what we work with them for", async ({ page }) => {
+    await page.goto("/");
+
+    const partners = page.locator('section[aria-labelledby="home-partners-heading"]');
+    await expect(partners.getByRole("listitem")).toHaveCount(8);
+    await expect(partners.getByRole("link", { name: /each type of cover/ })).toHaveAttribute(
+      "href",
+      "/about/partners"
+    );
+  });
+
+  test("new sections never describe advice as free of charge", async ({ page }) => {
+    await page.goto("/");
+
+    // The Disclosure Statement says insurers pay commission and a clawback fee can apply.
+    for (const id of ["advisers", "partners", "why", "reviews"]) {
+      await expect(page.locator(`section[aria-labelledby="home-${id}-heading"]`)).not.toContainText(
+        /free advice|free of charge|zero cost|no cost/i
+      );
+    }
+  });
+});
