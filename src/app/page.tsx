@@ -7,7 +7,6 @@ import { TowerCTAModule } from "@/components/sections/TowerCTAModule";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { PartnerLogos } from "@/components/sections/PartnerLogos";
 import { AdviserSpotlight } from "@/components/sections/AdviserSpotlight";
-import { CallbackForm } from "@/components/sections/CallbackForm";
 import { CTABand } from "@/components/sections/CTABand";
 import { Recognition } from "@/components/sections/Recognition";
 import { WhyMaxwellSummary } from "@/components/sections/WhyMaxwellSummary";
@@ -104,17 +103,12 @@ export default function HomePage() {
         <Recognition />
       </Container>
 
-      {/* 10. Quick Callback Request */}
-      <Container narrow>
-        <CallbackForm />
-      </Container>
-
-      {/* 11. Customer Reviews */}
+      {/* 10. Customer Reviews */}
       <Container>
         <CustomerReviews />
       </Container>
 
-      {/* 12. Final Call to Action Band */}
+      {/* 11. Final Call to Action Band */}
       <Container>
         <CTABand />
       </Container>
