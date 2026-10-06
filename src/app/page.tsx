@@ -11,6 +11,7 @@ import { CallbackForm } from "@/components/sections/CallbackForm";
 import { CTABand } from "@/components/sections/CTABand";
 import { Recognition } from "@/components/sections/Recognition";
 import { WhyMaxwellSummary } from "@/components/sections/WhyMaxwellSummary";
+import { CustomerReviews } from "@/components/sections/CustomerReviews";
 import { ShieldCheck, Award, Users, HeartHandshake } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -108,7 +109,12 @@ export default function HomePage() {
         <CallbackForm />
       </Container>
 
-      {/* 11. Final Call to Action Band */}
+      {/* 11. Customer Reviews */}
+      <Container>
+        <CustomerReviews />
+      </Container>
+
+      {/* 12. Final Call to Action Band */}
       <Container>
         <CTABand />
       </Container>
