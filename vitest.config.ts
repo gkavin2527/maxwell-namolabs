@@ -9,8 +9,14 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./tests/setup.ts"],
     include: ["tests/**/*.test.{ts,tsx}"],
+    server: {
+      deps: {
+        inline: ["lucide-react", "@testing-library/react"],
+      },
+    },
   },
   resolve: {
+    preserveSymlinks: true,
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
